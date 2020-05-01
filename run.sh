@@ -1,9 +1,9 @@
 #!/bin/bash
 
-REQURIEMENTS=$(pip list --disable-pip-version-check | grep -E newrelic-api | cut -d ' ' -f 1)
+REQURIEMENTS=$(pip3 list --disable-pip3-version-check | grep -E newrelic-api | cut -d ' ' -f 1)
 if [[ -z $REQURIEMENTS ]]; then
     echo "### Installing requirements ..."
-    pip install git+git://github.com/ambitioninc/newrelic-api.git
+    pip3 install git+git://github.com/ambitioninc/newrelic-api.git
 fi
 
 function usage(){
