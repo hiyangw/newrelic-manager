@@ -3,7 +3,7 @@
 REQURIEMENTS=$(pip3 list --disable-pip3-version-check | grep -E newrelic-api | cut -d ' ' -f 1)
 if [[ -z $REQURIEMENTS ]]; then
     echo "### Installing requirements ..."
-    pip3 install git+git://github.com/ambitioninc/newrelic-api.git
+    pip install git+git://github.com/ambitioninc/newrelic-api.git
 fi
 
 function usage(){
@@ -80,4 +80,4 @@ fi
 
 [[ -d output/${API} ]] || mkdir -p output/${API} 
 
-python3 main.py ${API} ${FUNCTION} ${FORMAT} ${SAVE} "${FILTER}" ${RESTORE}
+python main.py ${API} ${FUNCTION} ${FORMAT} ${SAVE} "${FILTER}" ${RESTORE}

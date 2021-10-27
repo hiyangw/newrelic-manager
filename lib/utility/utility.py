@@ -1,6 +1,5 @@
 import json
 import os
-import sys
 import yaml
 import logging
 
@@ -14,7 +13,7 @@ def check_api_key():
     key = os.environ['NEW_RELIC_API_KEY']
     if key is None or '':
         logging.error('Please set a correct API Key!')
-        sys.exit()
+        exit()
     return key
 
 
@@ -24,7 +23,7 @@ def check_function(api, function):
     if function is None or function not in functions:
         logging.error(
             'Please set a correct functions({})!'.format(' | '.join(functions)))
-        sys.exit()
+        exit()
     return function
 
 
@@ -33,34 +32,34 @@ def check_api(api):
     if api is None or api not in config.config:
         logging.error('Please set a correct New relic REST APIs({})!'.format(
             ' | '.join(config.config.keys())))
-        sys.exit()
+        exit()
     return api
 
 
 def check_id(parameters):
-    id = parameters['id']
-    if id == 'None' or id is None:
+    id_sets = parameters['id']
+    if id_sets == 'None' or id_sets is None:
         logging.error(
             'No ids in {} parameters, Please use --id to pass ids (ex. --id 123,123)!'.format(parameters['api']))
-        sys.exit()
-    ids = id.split(',')
+        exit()
+    ids = id_sets.split(',')
     if len(ids) < 1:
         logging.error(
-            'Please check your enter ids({}) are correct !'.format(id))
-        sys.exit()
+            'Please check your enter ids({}) are correct !'.format(id_sets))
+        exit()
     logging.debug('IDs: {}'.format(ids))
     return ids
 
 
 def parse_filters(api_parameters, parameters):
-    api_parameters=api_parameters.copy()
+    api_parameters = api_parameters.copy()
     api_parameters.pop('response_key', None)
     filters = parameters['filters']
     logging.debug(filters)
     function = parameters['function']
     if function == 'create' and filters != 'all':
         logging.error('{} not support filter'.format(function))
-        sys.exit()
+        exit()
     if filters == 'all':
         return None
     if '=' in filters:
@@ -69,7 +68,7 @@ def parse_filters(api_parameters, parameters):
         logging.error(
             'Incorrect filter format, Please check your filters{}'.format(
                 list(item + '={value}' for item in api_parameters)))
-        sys.exit()
+        exit()
     filter_key = filter_items[0]
     filter_value = filter_items[1]
     if filter_key in api_parameters:
@@ -77,7 +76,7 @@ def parse_filters(api_parameters, parameters):
     else:
         logging.error('Incorrect filter name, {} support filters{}'.format(function, list(
             item + '={value}' for item in api_parameters)))
-        sys.exit()
+        exit()
     logging.debug('Filter name: {} | Filter value: {}'.format(
         filter_key, filter_value))
     if filter_key == 'id':
@@ -96,7 +95,7 @@ def load_configure(api, function, file_format):
     if file_format == '':
         logging.error(
             'Please set backup file format(ex: --format=json | yaml)')
-        sys.exit()
+        exit()
     if function in ['create', 'update']:
         if file_format == 'json':
             configure = json.load(open('configure/{}.json'.format(api), 'r'))
@@ -130,7 +129,7 @@ def valid_configure(api):
     if len(configure) < 1:
         logging.error(
             '{} configure is empty! Please check your configuration'.format(api))
-        sys.exit()
+        exit()
     api_schema = schema.schema[api]
     return configure
 
