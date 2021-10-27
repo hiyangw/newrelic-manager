@@ -38,7 +38,7 @@
 Examples:
 
 ```
-./run.sh -k XXXXXXXXX -f dashboards --api list --format json --filter title="SRE"
+./run.sh -k XXXXXXXXX -f show --api dashboards --format json --filter id="123" 
 ```
 
 ## Developing Locally
